@@ -1,0 +1,1158 @@
+<title>화승위키</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Song+Myung&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAF8F3;
+    --surface:#FFFFFF;
+    --surface-2:#F2EEE5;
+    --border:#E7E1D3;
+    --ink:#211F1A;
+    --ink-soft:#6E6A5E;
+    --ink-faint:#A39D8C;
+    --accent:#283A63;
+    --accent-strong:#1B2846;
+    --accent-contrast:#FFFFFF;
+    --accent-soft:#E7EAF3;
+    --amber:#A8752C;
+    --amber-soft:#F3E7D2;
+    --shadow:0 1px 2px rgba(35,28,15,.05), 0 10px 28px -16px rgba(35,28,15,.20);
+    --radius-sm:8px;
+    --radius-md:12px;
+    --radius-lg:18px;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#14151B;
+      --surface:#1B1D25;
+      --surface-2:#22242E;
+      --border:#2C2F3A;
+      --ink:#EDEAE1;
+      --ink-soft:#A4A093;
+      --ink-faint:#6C6A60;
+      --accent:#8CA1F2;
+      --accent-strong:#AABBF6;
+      --accent-contrast:#141833;
+      --accent-soft:#242A42;
+      --amber:#DDAF5E;
+      --amber-soft:#332B18;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 28px -16px rgba(0,0,0,.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#14151B;
+    --surface:#1B1D25;
+    --surface-2:#22242E;
+    --border:#2C2F3A;
+    --ink:#EDEAE1;
+    --ink-soft:#A4A093;
+    --ink-faint:#6C6A60;
+    --accent:#8CA1F2;
+    --accent-strong:#AABBF6;
+    --accent-contrast:#141833;
+    --accent-soft:#242A42;
+    --amber:#DDAF5E;
+    --amber-soft:#332B18;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 28px -16px rgba(0,0,0,.5);
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    font-size:15px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer;}
+  h1,h2,h3{margin:0;text-wrap:balance;}
+  ul,ol{margin:0;padding:0;list-style:none;}
+  svg{display:block;flex:none;}
+  ::selection{background:var(--accent-soft);}
+
+  .app{display:flex;min-height:100vh;}
+
+  /* ---------- Sidebar ---------- */
+  .sidebar{
+    width:248px;flex:none;background:var(--surface);
+    border-right:1px solid var(--border);
+    display:flex;flex-direction:column;padding:22px 14px;gap:22px;
+  }
+  .brand{padding:2px 10px 14px;border-bottom:1px solid var(--border);}
+  .brand-mark{display:block;font-family:'Song Myung','Noto Serif KR',serif;font-size:1.5rem;letter-spacing:.01em;color:var(--ink);}
+  .brand-tag{display:block;margin-top:4px;font-size:.72rem;color:var(--ink-faint);letter-spacing:.02em;}
+  .nav{display:flex;flex-direction:column;gap:2px;flex:1;}
+  .nav-item{
+    display:flex;align-items:center;gap:10px;padding:9px 10px;
+    border-radius:var(--radius-sm);color:var(--ink-soft);
+    font-size:.875rem;font-weight:500;background:none;border:none;width:100%;text-align:left;
+  }
+  .nav-item svg{color:var(--ink-faint);}
+  .nav-item:hover{background:var(--surface-2);color:var(--ink);}
+  .nav-item.active{background:var(--accent-soft);color:var(--accent-strong);}
+  .nav-item.active svg{color:var(--accent-strong);}
+  .nav-divider{height:1px;background:var(--border);margin:8px 6px;}
+  .sidebar-foot{padding:10px 10px 2px;font-size:.7rem;color:var(--ink-faint);border-top:1px solid var(--border);}
+
+  /* ---------- Main column ---------- */
+  .main-col{flex:1;min-width:0;display:flex;flex-direction:column;}
+
+  .topbar{
+    display:flex;align-items:center;gap:16px;padding:16px 28px;
+    border-bottom:1px solid var(--border);background:var(--bg);
+    position:sticky;top:0;z-index:20;
+  }
+  .search{
+    flex:1;max-width:560px;display:flex;align-items:center;gap:8px;
+    background:var(--surface);border:1px solid var(--border);border-radius:999px;
+    padding:9px 14px;box-shadow:var(--shadow);
+  }
+  .search svg{color:var(--ink-faint);flex:none;}
+  .search-icon-btn{background:none;border:none;padding:0;display:flex;color:var(--ink-faint);}
+  .search input{flex:1;min-width:0;border:none;outline:none;background:transparent;color:var(--ink);font-family:inherit;font-size:.875rem;}
+  .search input::placeholder{color:var(--ink-faint);}
+  .ai-pill{flex:none;font-size:.68rem;font-weight:600;color:var(--amber);background:var(--amber-soft);padding:3px 9px;border-radius:999px;letter-spacing:.02em;border:none;}
+  .top-actions{display:flex;align-items:center;gap:8px;margin-left:auto;}
+  .pop-wrap{position:relative;}
+  .icon-btn{
+    position:relative;width:36px;height:36px;display:flex;align-items:center;justify-content:center;
+    background:transparent;border:1px solid transparent;border-radius:999px;color:var(--ink-soft);
+  }
+  .icon-btn:hover{background:var(--surface-2);border-color:var(--border);}
+  .icon-btn .dot{position:absolute;top:7px;right:8px;width:6px;height:6px;border-radius:50%;background:var(--amber);}
+  .user-chip{display:flex;align-items:center;gap:9px;padding:5px 10px 5px 6px;border:1px solid var(--border);border-radius:999px;background:var(--surface);}
+  .user-chip:hover{background:var(--surface-2);}
+  .avatar{width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-contrast);display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;flex:none;}
+  .user-chip .who{display:flex;flex-direction:column;line-height:1.2;text-align:left;}
+  .user-chip .who b{font-size:.8rem;font-weight:600;}
+  .user-chip .who span{font-size:.68rem;color:var(--ink-faint);}
+  .user-chip svg{color:var(--ink-faint);margin-left:2px;}
+
+  .pop{
+    position:absolute;top:calc(100% + 8px);right:0;background:var(--surface);
+    border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow);
+    min-width:250px;padding:6px;display:none;z-index:40;
+  }
+  .pop.open{display:block;}
+  .pop-title{font-size:.7rem;color:var(--ink-faint);padding:8px 10px 4px;letter-spacing:.02em;}
+  .pop-item{display:block;width:100%;text-align:left;padding:9px 10px;border-radius:var(--radius-sm);font-size:.82rem;background:none;border:none;color:var(--ink);}
+  .pop-item:hover{background:var(--surface-2);}
+  .pop-divider{height:1px;background:var(--border);margin:4px 6px;}
+  .pop-notice{display:block;padding:8px 10px;border-top:1px solid var(--border);font-size:.8rem;color:var(--ink-soft);line-height:1.5;}
+  .pop-notice:first-of-type{border-top:none;}
+  .pop-notice b{display:block;font-size:.8rem;font-weight:600;}
+  .pop-notice span{font-size:.68rem;color:var(--ink-faint);}
+
+  .content{flex:1;padding:30px 28px 0;max-width:1180px;width:100%;margin:0 auto;}
+  .view{display:none;}
+  .view.active{display:block;}
+
+  .view-header{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:22px;}
+  .view-header h1{font-family:'Song Myung','Noto Serif KR',serif;font-size:1.7rem;font-weight:400;}
+  .view-header p{margin:6px 0 0;color:var(--ink-soft);font-size:.85rem;}
+
+  .greet-row{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:18px;}
+  .greet-row h1{font-family:'Song Myung','Noto Serif KR',serif;font-size:1.9rem;font-weight:400;}
+  .greet-row .muted{margin:6px 0 0;color:var(--ink-soft);font-size:.875rem;}
+  .chip-row{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 24px;}
+  .chip{background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:7px 13px;font-size:.75rem;color:var(--ink-soft);}
+  .chip:hover{border-color:var(--accent);color:var(--accent-strong);}
+
+  .btn-primary{
+    display:inline-flex;align-items:center;gap:7px;background:var(--accent);color:var(--accent-contrast);
+    border:none;padding:10px 18px;border-radius:var(--radius-md);font-size:.85rem;font-weight:600;box-shadow:var(--shadow);
+  }
+  .btn-primary:hover{background:var(--accent-strong);}
+  .btn-primary.small{padding:8px 14px;font-size:.8rem;}
+  .btn-primary:focus-visible, .icon-btn:focus-visible, .nav-item:focus-visible,
+  .user-chip:focus-visible, .filter-btn:focus-visible, .dept-btn:focus-visible,
+  .chip:focus-visible, .pop-item:focus-visible, .dept-card-head:focus-visible,
+  .acc-head:focus-visible, .modal-close:focus-visible, .doc-star:focus-visible,
+  input:focus-visible, select:focus-visible, textarea:focus-visible{
+    outline:2px solid var(--accent);outline-offset:2px;
+  }
+
+  .grid{display:grid;grid-template-columns:1.6fr 1fr;gap:20px;align-items:start;}
+
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow);}
+  .card + .card{margin-top:20px;}
+  .card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;}
+  .card h2{font-size:.95rem;font-weight:600;}
+
+  .select-wrap{position:relative;display:inline-flex;align-items:center;}
+  .select-wrap svg{position:absolute;right:11px;pointer-events:none;color:var(--ink-faint);}
+  select.filter-select{
+    appearance:none;background:var(--surface-2);border:1px solid var(--border);
+    padding:7px 30px 7px 12px;border-radius:999px;font-size:.75rem;color:var(--ink-soft);font-family:inherit;
+  }
+  .filter-btn{display:flex;align-items:center;gap:5px;background:var(--surface-2);border:1px solid var(--border);padding:6px 11px;border-radius:999px;font-size:.75rem;color:var(--ink-soft);}
+  .filter-btn:hover{color:var(--ink);}
+
+  .mini-search{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:8px 14px;flex:1;max-width:320px;}
+  .mini-search svg{color:var(--ink-faint);}
+  .mini-search input{border:none;background:transparent;outline:none;font-family:inherit;font-size:.8rem;color:var(--ink);flex:1;min-width:0;}
+
+  .view-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+
+  .doc-list{display:flex;flex-direction:column;}
+  .doc-item{display:flex;align-items:center;gap:10px;padding:12px 6px;border-top:1px solid var(--border);}
+  .doc-item:first-child{border-top:none;padding-top:4px;}
+  .doc-item-btn{display:flex;align-items:center;gap:12px;flex:1;min-width:0;background:none;border:none;text-align:left;padding:0;}
+  .doc-icon{width:34px;height:34px;flex:none;border-radius:var(--radius-sm);background:var(--surface-2);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);}
+  .doc-main{flex:1;min-width:0;}
+  .doc-title{font-size:.875rem;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .doc-meta{margin-top:2px;font-size:.72rem;color:var(--ink-faint);}
+  .doc-time{flex:none;font-size:.72rem;color:var(--ink-faint);font-variant-numeric:tabular-nums;}
+  .doc-star{background:none;border:none;padding:4px;color:var(--ink-faint);flex:none;border-radius:6px;}
+  .doc-star svg{fill:none;}
+  .doc-star:hover{color:var(--amber);}
+  .doc-star.active{color:var(--amber);}
+  .doc-star.active svg{fill:currentColor;}
+  .empty-state{padding:30px 6px;text-align:center;color:var(--ink-faint);font-size:.82rem;}
+  .empty-state svg{margin:0 auto 10px;color:var(--ink-faint);}
+
+  .rail{display:flex;flex-direction:column;}
+
+  .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .stat{background:var(--surface-2);border-radius:var(--radius-md);padding:12px 10px;text-align:center;}
+  .stat-num{display:block;font-size:1.35rem;font-weight:700;font-variant-numeric:tabular-nums;color:var(--accent-strong);}
+  .stat-label{display:block;margin-top:3px;font-size:.68rem;color:var(--ink-soft);}
+
+  .dept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+  .dept-btn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;background:var(--surface-2);border:1px solid transparent;border-radius:var(--radius-md);color:var(--ink-soft);font-size:.72rem;font-weight:500;}
+  .dept-btn:hover{border-color:var(--border);color:var(--ink);}
+  .dept-btn svg{color:var(--accent-strong);}
+
+  .notice-list{display:flex;flex-direction:column;}
+  .notice-item{display:flex;flex-direction:column;gap:2px;padding:10px 2px;border-top:1px solid var(--border);}
+  .notice-item:first-child{border-top:none;padding-top:2px;}
+  .notice-title{font-size:.8rem;color:var(--ink);}
+  .notice-meta{font-size:.68rem;color:var(--ink-faint);}
+
+  .page-foot{margin:28px 0 30px;padding-top:16px;border-top:1px solid var(--border);font-size:.72rem;color:var(--ink-faint);line-height:1.6;}
+
+  /* ---- Departments view ---- */
+  .dept-grid-lg{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;}
+  .dept-card-lg{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);}
+  .dept-card-head{background:none;border:none;padding:0;width:100%;text-align:left;cursor:pointer;display:block;}
+  .dept-icon-lg{width:38px;height:38px;border-radius:var(--radius-sm);background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent-strong);margin-bottom:12px;}
+  .dept-card-lg h3{font-size:.95rem;font-weight:600;margin:0 0 4px;}
+  .dept-card-lg p{margin:0;font-size:.75rem;color:var(--ink-soft);}
+  .dept-count{margin-top:10px;font-size:.7rem;color:var(--ink-faint);}
+  .dept-detail{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:none;}
+  .dept-card-lg.open .dept-detail{display:block;}
+  .dept-detail .doc-item{padding:9px 0;}
+  .dept-detail .doc-item:first-child{padding-top:0;}
+  .doc-item.compact{display:flex;flex-direction:column;align-items:stretch;gap:6px;}
+  .doc-item.compact .doc-item-btn{width:100%;}
+  .doc-item.compact .doc-title{white-space:normal;overflow:visible;text-overflow:clip;}
+  .doc-item.compact .doc-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-left:44px;}
+
+  /* ---- Glossary view ---- */
+  .glossary-item{padding:14px 2px;border-top:1px solid var(--border);}
+  .glossary-item:first-child{border-top:none;padding-top:4px;}
+  .glossary-term{font-weight:700;font-size:.9rem;}
+  .glossary-dept{display:inline-block;margin-left:8px;font-size:.68rem;color:var(--accent-strong);background:var(--accent-soft);padding:2px 8px;border-radius:999px;vertical-align:middle;}
+  .glossary-def{margin-top:4px;font-size:.8rem;color:var(--ink-soft);}
+
+  /* ---- Accordion (process + cases) ---- */
+  .acc-item{border-top:1px solid var(--border);}
+  .acc-item:first-child{border-top:none;}
+  .acc-head{width:100%;display:flex;align-items:center;gap:14px;padding:14px 2px;background:none;border:none;text-align:left;}
+  .acc-badge{width:32px;height:32px;flex:none;border-radius:50%;background:var(--accent-soft);color:var(--accent-strong);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;font-variant-numeric:tabular-nums;}
+  .acc-head-main{flex:1;min-width:0;}
+  .acc-title{font-size:.9rem;font-weight:600;}
+  .acc-sub{font-size:.75rem;color:var(--ink-faint);margin-top:1px;}
+  .acc-chevron{color:var(--ink-faint);transition:transform .2s;}
+  .acc-item.open .acc-chevron{transform:rotate(180deg);}
+  .acc-body{display:none;padding:0 2px 16px 46px;font-size:.82rem;color:var(--ink-soft);line-height:1.6;}
+  .acc-item.open .acc-body{display:block;}
+  .acc-body b{color:var(--ink);}
+
+  /* ---- Team view ---- */
+  .team-member{display:flex;align-items:center;gap:12px;padding:11px 2px;border-top:1px solid var(--border);}
+  .team-member:first-child{border-top:none;padding-top:2px;}
+  .team-member .avatar{width:34px;height:34px;font-size:.75rem;}
+  .tm-info b{font-size:.85rem;}
+  .tm-info span{display:block;font-size:.72rem;color:var(--ink-faint);margin-top:1px;}
+  .tm-tag{margin-left:auto;font-size:.68rem;color:var(--accent-strong);background:var(--accent-soft);padding:3px 9px;border-radius:999px;}
+
+  /* ---- AI answer panel ---- */
+  .ai-panel{margin:0 0 24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px;box-shadow:var(--shadow);display:none;}
+  .ai-panel.show{display:block;}
+  .ai-panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+  .ai-q{font-size:.78rem;color:var(--ink-faint);margin-bottom:8px;}
+  .ai-badge{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:6px;background:var(--accent);color:var(--accent-contrast);font-size:.6rem;font-weight:700;margin-right:6px;vertical-align:middle;}
+  .ai-a-lead{font-size:.9rem;font-weight:600;margin-bottom:14px;}
+  .ai-a-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:14px;}
+  .ai-a-grid div{font-size:.8rem;color:var(--ink);}
+  .ai-a-label{display:block;font-size:.68rem;color:var(--ink-faint);margin-bottom:2px;}
+  .ai-steps{display:flex;flex-direction:column;gap:9px;counter-reset:step;}
+  .ai-steps li{counter-increment:step;display:flex;gap:10px;font-size:.82rem;align-items:baseline;}
+  .ai-steps li::before{content:counter(step);flex:none;width:20px;height:20px;border-radius:50%;background:var(--accent-soft);color:var(--accent-strong);font-size:.68rem;font-weight:700;display:flex;align-items:center;justify-content:center;transform:translateY(1px);}
+  .ai-chain{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+  .ai-chain .chain-node{background:var(--surface-2);border-radius:999px;padding:6px 12px;font-size:.78rem;}
+  .ai-chain .chain-arrow{color:var(--ink-faint);}
+  .ai-panel-close{background:none;border:none;color:var(--ink-faint);flex:none;padding:2px;}
+  .ai-panel-close:hover{color:var(--ink);}
+
+  /* ---- Modal ---- */
+  .modal-backdrop{position:fixed;inset:0;background:rgba(20,17,10,.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:60;}
+  .modal-backdrop.show{display:flex;}
+  .modal{background:var(--surface);border-radius:var(--radius-lg);max-width:480px;width:100%;max-height:85vh;overflow:auto;padding:24px;box-shadow:var(--shadow);position:relative;}
+  .modal-close{position:absolute;top:14px;right:14px;background:var(--surface-2);border:none;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ink-soft);}
+  .modal-close:hover{color:var(--ink);}
+  .modal h2{font-size:1.05rem;margin:0 22px 4px 0;}
+  .modal .modal-meta{font-size:.75rem;color:var(--ink-faint);margin-bottom:16px;}
+  .modal .modal-body{font-size:.85rem;color:var(--ink-soft);line-height:1.7;}
+  .modal .modal-body b{color:var(--ink);}
+  .modal .modal-body ol,.modal .modal-body ul{padding-left:0;margin-top:10px;}
+  .field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
+  .field label{font-size:.75rem;color:var(--ink-soft);font-weight:600;}
+  .field input[type="text"],.field select,.field textarea{
+    border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 11px;
+    font-family:inherit;font-size:.85rem;background:var(--bg);color:var(--ink);width:100%;
+  }
+  .field textarea{resize:vertical;min-height:80px;}
+  .modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:6px;}
+  .btn-ghost{background:var(--surface-2);border:1px solid var(--border);color:var(--ink-soft);padding:9px 16px;border-radius:var(--radius-md);font-size:.83rem;font-weight:600;}
+  .btn-ghost:hover{color:var(--ink);}
+
+  /* ---- Toast ---- */
+  #toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--ink);color:var(--bg);padding:10px 20px;border-radius:999px;font-size:.8rem;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:80;white-space:nowrap;}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  @media (prefers-reduced-motion: reduce){
+    .search input,.acc-chevron,#toast{transition:none;}
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:860px){
+    .app{flex-direction:column;}
+    .sidebar{width:100%;flex-direction:row;align-items:center;padding:12px 16px;gap:14px;overflow-x:auto;border-right:none;border-bottom:1px solid var(--border);}
+    .brand{border-bottom:none;padding:0;flex:none;}
+    .brand-tag{display:none;}
+    .nav{flex-direction:row;flex:none;gap:2px;}
+    .nav-item span{display:none;}
+    .nav-item{padding:9px;}
+    .nav-divider{width:1px;height:20px;margin:0 4px;}
+    .sidebar-foot{display:none;}
+    .content{padding:20px 16px 0;}
+    .grid{grid-template-columns:1fr;}
+    .card + .card{margin-top:16px;}
+    .topbar{position:static;}
+  }
+  @media (max-width:520px){
+    .topbar{padding:12px 16px;flex-wrap:wrap;}
+    .search{order:1;max-width:none;width:100%;}
+    .top-actions{order:2;margin-left:0;}
+    .user-chip .who{display:none;}
+    .greet-row h1,.view-header h1{font-size:1.5rem;}
+    .ai-pill{display:none;}
+    .stat-row{grid-template-columns:repeat(3,1fr);gap:6px;}
+    .stat-num{font-size:1.1rem;}
+    .dept-grid{grid-template-columns:repeat(3,1fr);}
+    .dept-grid-lg{grid-template-columns:1fr 1fr;}
+    .view-toolbar{flex-direction:column;align-items:stretch;}
+    .mini-search{max-width:none;}
+    .pop{left:0;right:auto;min-width:0;width:calc(100vw - 32px);max-width:280px;}
+    .acc-body{padding-left:2px;}
+  }
+</style>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">화승위키</span>
+      <span class="brand-tag">AI 업무 지식 플랫폼</span>
+    </div>
+    <nav class="nav" id="nav">
+      <button class="nav-item active" type="button" data-view="dashboard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H9a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h2.5a1 1 0 0 0 1-1v-9"/></svg>
+        <span>대시보드</span>
+      </button>
+      <button class="nav-item" type="button" data-view="knowledge">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15.5H6.5A2.5 2.5 0 0 0 4 21"/><path d="M4 5.5v13A2.5 2.5 0 0 0 6.5 21H20"/><path d="M8 8h8M8 11.5h6"/></svg>
+        <span>업무 지식</span>
+      </button>
+      <button class="nav-item" type="button" data-view="departments">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V6l7-3 7 3v15"/><path d="M5 21h14M9 21v-5h6v5M9 10h1M14 10h1M9 14h1M14 14h1"/></svg>
+        <span>부서별 업무</span>
+      </button>
+      <button class="nav-item" type="button" data-view="glossary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11.5 4h-5A1.5 1.5 0 0 0 5 5.5v5c0 .4.16.78.44 1.06l8 8a1.5 1.5 0 0 0 2.12 0l5-5a1.5 1.5 0 0 0 0-2.12l-8-8A1.5 1.5 0 0 0 11.5 4Z"/><circle cx="9" cy="9" r="1.1" fill="currentColor" stroke="none"/></svg>
+        <span>업무 용어집</span>
+      </button>
+      <button class="nav-item" type="button" data-view="process">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.2"/><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="12" r="2.2"/><path d="M6 8.2v7.6M8 6.7l8 3.7M8 17.3l8-3.7"/></svg>
+        <span>업무 프로세스</span>
+      </button>
+      <button class="nav-item" type="button" data-view="cases">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg>
+        <span>과거 사례</span>
+      </button>
+      <div class="nav-divider"></div>
+      <button class="nav-item" type="button" data-view="favorites">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.7 5.7 6.3.9-4.5 4.4 1 6.2L12 17l-5.5 3.2 1-6.2-4.5-4.4 6.3-.9L12 3Z"/></svg>
+        <span>즐겨찾기</span>
+      </button>
+      <button class="nav-item" type="button" data-view="team">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3.5 20c.6-3.2 2.9-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17" cy="9" r="2.4"/><path d="M15.8 15.2c2.2.2 3.9 1.8 4.4 4.3"/></svg>
+        <span>팀 공간</span>
+      </button>
+    </nav>
+    <div class="sidebar-foot">데모 버전 · AI 아이디어 공모전 제출작</div>
+  </aside>
+
+  <div class="main-col">
+    <header class="topbar">
+      <div class="search">
+        <button class="search-icon-btn" id="searchGo" type="button" aria-label="검색">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
+        <input id="searchInput" type="text" aria-label="화승위키 검색" placeholder="지식, 문서, 용어를 검색해보세요">
+        <span class="ai-pill">AI 검색</span>
+      </div>
+      <div class="top-actions">
+        <div class="pop-wrap">
+          <button class="icon-btn" id="bellBtn" aria-label="알림" type="button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0 1 12 0c0 4 1.5 5.5 2 6H4c.5-.5 2-2 2-6Z"/><path d="M9.5 18a2.5 2.5 0 0 0 5 0"/></svg>
+            <span class="dot" id="bellDot"></span>
+          </button>
+          <div class="pop" id="bellPop">
+            <div class="pop-title">업무 공지사항</div>
+            <span class="pop-notice"><b>월말마감 체크리스트가 업데이트됐어요</b><span>회계팀 · 오늘</span></span>
+            <span class="pop-notice"><b>신입사원 온보딩 가이드가 개편됐어요</b><span>인사팀 · 어제</span></span>
+            <span class="pop-notice"><b>화승위키, 사내 AI 아이디어 공모전에 제출됐어요</b><span>운영팀 · 3일 전</span></span>
+            <div class="pop-divider"></div>
+            <button class="pop-item" type="button" data-action="mark-read">모두 읽음으로 표시</button>
+          </div>
+        </div>
+        <div class="pop-wrap">
+          <button class="icon-btn" id="helpBtn" aria-label="도움말" type="button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.2a2.4 2.4 0 1 1 3.4 2.2c-.9.5-1 .9-1 1.9"/><path d="M12 17.2h.01"/></svg>
+          </button>
+          <div class="pop" id="helpPop">
+            <div class="pop-title">화승위키 이용 팁</div>
+            <span class="pop-notice">검색창에 궁금한 업무를 그대로 물어보세요. AI가 관련 문서를 연결해드려요.</span>
+            <span class="pop-notice">문서 카드의 별표(★)를 누르면 즐겨찾기에 저장돼요.</span>
+            <span class="pop-notice">왼쪽 메뉴에서 부서별 업무 · 용어집 · 프로세스를 바로 확인할 수 있어요.</span>
+            <span class="pop-notice">이 화면은 공모전 제출용 데모로, 실제 데이터가 아닌 예시입니다.</span>
+          </div>
+        </div>
+        <div class="pop-wrap">
+          <button class="user-chip" id="userBtn" type="button">
+            <span class="avatar">KH</span>
+            <span class="who"><b>김현</b><span>영업지원팀 · Manager</span></span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="pop" id="userPop">
+            <button class="pop-item" type="button" data-action="toast-demo">내 프로필</button>
+            <button class="pop-item" type="button" data-action="toast-demo">알림 설정</button>
+            <div class="pop-divider"></div>
+            <button class="pop-item" type="button" data-action="toast-demo">로그아웃</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- ================= DASHBOARD ================= -->
+      <section class="view active" id="view-dashboard">
+        <div class="greet-row">
+          <div>
+            <h1>안녕하세요, 김현님</h1>
+            <p class="muted">이번 주 새로 등록된 지식이 <span id="weeklyCount">3</span>건 있어요. 궁금한 업무를 바로 물어보세요.</p>
+          </div>
+          <button class="btn-primary" type="button" data-action="open-new-doc">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            새 문서 만들기
+          </button>
+        </div>
+        <div class="chip-row">
+          <button class="chip" type="button" data-action="chip-search" data-q="거래처에서 세금계산서가 안 왔는데 어떻게 하나요?">거래처에서 세금계산서가 안 왔는데 어떻게 하나요?</button>
+          <button class="chip" type="button" data-action="chip-search" data-q="경영지원팀 신입사원인데 뭐부터 알아야 하나요?">경영지원팀 신입사원인데 뭐부터 알아야 하나요?</button>
+          <button class="chip" type="button" data-action="chip-search" data-q="발주부터 입고까지 절차가 궁금해요">발주부터 입고까지 절차가 궁금해요</button>
+        </div>
+
+        <div class="ai-panel" id="aiPanel"></div>
+
+        <div class="grid">
+          <section class="card docs-card">
+            <div class="card-head">
+              <h2>최근 업데이트 문서</h2>
+              <div class="select-wrap">
+                <select class="filter-select" id="dashDeptFilter" aria-label="부서 필터">
+                  <option value="all">전체 부서</option>
+                  <option value="영업">영업</option>
+                  <option value="인사">인사</option>
+                  <option value="회계">회계</option>
+                  <option value="구매">구매</option>
+                  <option value="물류">물류</option>
+                  <option value="품질">품질</option>
+                </select>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              </div>
+            </div>
+            <ul class="doc-list" id="dashboardDocList"></ul>
+          </section>
+
+          <aside class="rail">
+            <section class="card stats-card">
+              <div class="card-head"><h2>내 위키 활동</h2></div>
+              <div class="stat-row">
+                <div class="stat"><span class="stat-num" id="statCreated">12</span><span class="stat-label">등록한 지식</span></div>
+                <div class="stat"><span class="stat-num">34</span><span class="stat-label">답변에 반영됨</span></div>
+                <div class="stat"><span class="stat-num" id="statFav">3</span><span class="stat-label">즐겨찾기</span></div>
+              </div>
+            </section>
+
+            <section class="card dept-card">
+              <div class="card-head"><h2>부서 바로가기</h2></div>
+              <div class="dept-grid">
+                <button class="dept-btn" type="button" data-action="goto-dept" data-dept="영업">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="1.5"/><path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg>
+                  영업
+                </button>
+                <button class="dept-btn" type="button" data-action="goto-dept" data-dept="인사">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M5.5 20c.9-4 3.3-6 6.5-6s5.6 2 6.5 6"/></svg>
+                  인사
+                </button>
+                <button class="dept-btn" type="button" data-action="goto-dept" data-dept="회계">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10v18l-2.5-1.6L12 21l-2.5-1.6L7 21z"/><path d="M9.5 8h5M9.5 11.5h5M9.5 15h3"/></svg>
+                  회계
+                </button>
+                <button class="dept-btn" type="button" data-action="goto-dept" data-dept="구매">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+                  구매
+                </button>
+                <button class="dept-btn" type="button" data-action="goto-dept" data-dept="물류">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="10" width="10" height="7"/><path d="M12.5 12.5H16l3.5 3v1.5h-7z"/><circle cx="6.5" cy="18.2" r="1.5"/><circle cx="16.5" cy="18.2" r="1.5"/></svg>
+                  물류
+                </button>
+                <button class="dept-btn" type="button" data-action="goto-dept" data-dept="품질">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 19 6v6c0 4.5-3 7.5-7 8.5-4-1-7-4-7-8.5V6z"/><path d="m9 12 2 2 4-4.2"/></svg>
+                  품질
+                </button>
+              </div>
+            </section>
+
+            <section class="card notice-card">
+              <div class="card-head"><h2>업무 공지사항</h2></div>
+              <ul class="notice-list">
+                <li class="notice-item"><span class="notice-title">월말마감 체크리스트가 업데이트됐어요</span><span class="notice-meta">회계팀 · 오늘</span></li>
+                <li class="notice-item"><span class="notice-title">신입사원 온보딩 가이드가 개편됐어요</span><span class="notice-meta">인사팀 · 어제</span></li>
+                <li class="notice-item"><span class="notice-title">화승위키, 사내 AI 아이디어 공모전에 제출됐어요</span><span class="notice-meta">운영팀 · 3일 전</span></li>
+              </ul>
+            </section>
+          </aside>
+        </div>
+
+        <footer class="page-foot">이 화면은 AI 교육 이수 후 사내 아이디어 공모전에 제출된 '화승위키' 제안의 데모입니다. 실제 서비스가 아니며, 화면 속 문서·수치는 예시입니다.</footer>
+      </section>
+
+      <!-- ================= KNOWLEDGE ================= -->
+      <section class="view" id="view-knowledge">
+        <div class="view-header">
+          <div>
+            <h1>업무 지식</h1>
+            <p>부서별로 쌓인 업무 지식을 검색하고 열람하세요.</p>
+          </div>
+          <button class="btn-primary small" type="button" data-action="open-new-doc">+ 새 문서 만들기</button>
+        </div>
+        <div class="view-toolbar">
+          <div class="mini-search">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+            <input id="knowledgeQuery" type="text" placeholder="문서 제목으로 검색">
+          </div>
+          <div class="select-wrap">
+            <select class="filter-select" id="knowledgeDeptFilter" aria-label="부서 필터">
+              <option value="all">전체 부서</option>
+              <option value="영업">영업</option>
+              <option value="인사">인사</option>
+              <option value="회계">회계</option>
+              <option value="구매">구매</option>
+              <option value="물류">물류</option>
+              <option value="품질">품질</option>
+            </select>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+        </div>
+        <section class="card">
+          <ul class="doc-list" id="knowledgeDocList"></ul>
+        </section>
+      </section>
+
+      <!-- ================= DEPARTMENTS ================= -->
+      <section class="view" id="view-departments">
+        <div class="view-header">
+          <div>
+            <h1>부서별 업무</h1>
+            <p>부서를 눌러 해당 부서의 업무 지식을 확인하세요.</p>
+          </div>
+        </div>
+        <div class="dept-grid-lg" id="deptGridLg"></div>
+      </section>
+
+      <!-- ================= GLOSSARY ================= -->
+      <section class="view" id="view-glossary">
+        <div class="view-header">
+          <div>
+            <h1>업무 용어집</h1>
+            <p>사내에서 자주 쓰는 용어를 바로 찾아보세요.</p>
+          </div>
+        </div>
+        <div class="view-toolbar">
+          <div class="mini-search" style="max-width:420px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+            <input id="glossaryQuery" type="text" placeholder="용어를 입력해보세요 (예: ERP)">
+          </div>
+        </div>
+        <section class="card">
+          <div id="glossaryList"></div>
+        </section>
+      </section>
+
+      <!-- ================= PROCESS ================= -->
+      <section class="view" id="view-process">
+        <div class="view-header">
+          <div>
+            <h1>업무 프로세스</h1>
+            <p>발주부터 월말마감까지, 하나로 이어진 업무 흐름입니다. 단계를 눌러 자세히 보세요.</p>
+          </div>
+        </div>
+        <section class="card">
+          <div id="processList"></div>
+        </section>
+      </section>
+
+      <!-- ================= CASES ================= -->
+      <section class="view" id="view-cases">
+        <div class="view-header">
+          <div>
+            <h1>과거 사례</h1>
+            <p>비슷한 상황에서 실제로 어떻게 처리했는지 확인해보세요.</p>
+          </div>
+        </div>
+        <section class="card">
+          <div id="casesList"></div>
+        </section>
+      </section>
+
+      <!-- ================= FAVORITES ================= -->
+      <section class="view" id="view-favorites">
+        <div class="view-header">
+          <div>
+            <h1>즐겨찾기</h1>
+            <p>별표를 눌러 저장한 문서를 모아봤어요.</p>
+          </div>
+        </div>
+        <section class="card">
+          <ul class="doc-list" id="favoritesList"></ul>
+        </section>
+      </section>
+
+      <!-- ================= TEAM ================= -->
+      <section class="view" id="view-team">
+        <div class="view-header">
+          <div>
+            <h1>영업지원팀 공간</h1>
+            <p>우리 팀 멤버와 고정된 업무 지식을 확인하세요.</p>
+          </div>
+        </div>
+        <div class="grid">
+          <section class="card">
+            <div class="card-head"><h2>고정된 문서</h2></div>
+            <ul class="doc-list" id="teamPinnedList"></ul>
+          </section>
+          <aside class="rail">
+            <section class="card">
+              <div class="card-head"><h2>팀 멤버 · 4명</h2></div>
+              <div id="teamMemberList"></div>
+            </section>
+          </aside>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal" id="modalBox" role="dialog" aria-modal="true"></div>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------------- data ---------------- */
+  var DOC_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M9 12h6M9 15.5h6M9 8.5h2"/></svg>';
+  var STAR_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.7 5.7 6.3.9-4.5 4.4 1 6.2L12 17l-5.5 3.2 1-6.2-4.5-4.4 6.3-.9L12 3Z"/></svg>';
+  var CHEVRON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>';
+
+  var DEPTS = [
+    {key:'영업', desc:'거래처 관리와 영업 지원 업무', icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="1.5"/><path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg>'},
+    {key:'인사', desc:'채용 · 노무 · 4대보험 등 인사 업무', icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M5.5 20c.9-4 3.3-6 6.5-6s5.6 2 6.5 6"/></svg>'},
+    {key:'회계', desc:'세금계산서 · 전표 · 월말마감 처리', icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10v18l-2.5-1.6L12 21l-2.5-1.6L7 21z"/><path d="M9.5 8h5M9.5 11.5h5M9.5 15h3"/></svg>'},
+    {key:'구매', desc:'발주와 협력사 계약 관리', icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>'},
+    {key:'물류', desc:'입고 · 재고 · 배송 관리', icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="10" width="10" height="7"/><path d="M12.5 12.5H16l3.5 3v1.5h-7z"/><circle cx="6.5" cy="18.2" r="1.5"/><circle cx="16.5" cy="18.2" r="1.5"/></svg>'},
+    {key:'품질', desc:'검수 기준과 품질 관리 절차', icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 19 6v6c0 4.5-3 7.5-7 8.5-4-1-7-4-7-8.5V6z"/><path d="m9 12 2 2 4-4.2"/></svg>'}
+  ];
+
+  var state = {
+    docs: [
+      {id:1, title:'매입세금계산서 처리 절차', dept:'회계', author:'박서연', time:'방금 전', favorite:true,
+        detail:'<p><b>담당 부서</b> · 회계팀 &nbsp;|&nbsp; <b>관련 용어</b> · 매입세금계산서 · ERP · 월말마감</p><ol><li>거래처 확인</li><li>발행 요청</li><li>발행 여부 확인</li><li>ERP 반영</li></ol>'},
+      {id:2, title:'신입사원 온보딩 가이드', dept:'인사', author:'김도윤', time:'2시간 전', favorite:false,
+        detail:'<p>신입사원이 회사에 적응하는 데 필요한 6단계 학습 경로입니다.</p><ol><li><b>회사</b> · 사업 구조와 조직 전체 흐름 이해</li><li><b>부서</b> · 소속 부서의 역할과 담당 업무</li><li><b>업무</b> · 핵심 업무 목록 파악</li><li><b>용어</b> · 사내 용어와 약어 정리</li><li><b>프로세스</b> · 업무별 처리 절차와 결재 흐름</li><li><b>실제 사례</b> · 과거 처리 사례로 감 잡기</li></ol>'},
+      {id:3, title:'발주 - 입고 - 검수 프로세스', dept:'구매', author:'이하늘', time:'3시간 전', favorite:true,
+        detail:'<p>구매팀의 발주부터 회계팀의 월말마감까지 이어지는 업무 사슬입니다.</p><ol><li><b>발주</b> · 구매팀 · 공급 계약 · 단가</li><li><b>입고</b> · 물류팀 · 납품서 · 재고</li><li><b>검수</b> · 품질팀 · 검수 기준 · 검수 결과서</li><li><b>세금계산서</b> · 회계팀 · 매입세금계산서 발행 확인</li><li><b>회계처리</b> · 회계팀 · 전표 · 계정과목</li><li><b>월말마감</b> · 회계팀 · 월말마감 체크리스트</li></ol>'},
+      {id:4, title:'2026년 3분기 영업지원팀 업무계획', dept:'영업', author:'김현', time:'어제', favorite:false,
+        detail:'<p>영업지원팀의 3분기 주요 업무 계획입니다.</p><ul><li>대리점 정책 안내 자료 정비 및 배포</li><li>거래처 정기 방문 일정 수립</li><li>신규 프로모션 예산 편성 및 집행 관리</li><li>영업 데이터 월간 리포트 개선</li></ul>'},
+      {id:5, title:'월말마감 체크리스트', dept:'회계', author:'박서연', time:'2일 전', favorite:false,
+        detail:'<p>매월 말 회계팀이 확인하는 마감 항목입니다.</p><ul><li>전표 확정 여부 확인</li><li>매입 · 매출 세금계산서 정리</li><li>재고 실사 반영 확인</li><li>부서별 비용 마감 확인 후 ERP 반영</li></ul>'},
+      {id:6, title:'신규 입사자 4대보험 등록 절차', dept:'인사', author:'김도윤', time:'3일 전', favorite:true,
+        detail:'<p>신규 입사자의 4대보험 가입 처리 절차입니다.</p><ol><li>자격취득 신고서 작성</li><li>4대보험 정보연계센터 등록</li><li>급여 시스템 공제 반영 확인</li></ol>'},
+      {id:7, title:'품질 검수 기준 안내', dept:'품질', author:'정유진', time:'4일 전', favorite:false,
+        detail:'<p>입고 물품의 품질 검수 시 확인하는 기준입니다.</p><ul><li>외관 · 규격 일치 여부</li><li>수량 · 납품서 대조</li><li>샘플 기능 테스트 결과</li><li>부적합 시 반품 · 재입고 처리 기준</li></ul>'},
+      {id:8, title:'물류 입고 확인 매뉴얼', dept:'물류', author:'한지민', time:'5일 전', favorite:false,
+        detail:'<p>물류팀의 입고 확인 절차입니다.</p><ol><li>납품서와 실입고 수량 대조</li><li>보관 위치 지정 및 재고 등록</li><li>품질팀 검수 요청</li></ol>'}
+    ],
+    createdCount: 12,
+    weeklyBase: 3
+  };
+
+  var GLOSSARY = [
+    {term:'매입세금계산서', dept:'회계', def:'거래처로부터 받는 매입 관련 세금계산서. 발행 여부를 확인한 뒤 ERP에 반영합니다.'},
+    {term:'ERP', dept:'전사', def:'전사자원관리 시스템. 회계 · 구매 · 인사 데이터가 이곳에서 통합 관리됩니다.'},
+    {term:'월말마감', dept:'회계', def:'매월 말 전표 · 매출 · 매입을 확정하고 재무제표를 마감하는 절차입니다.'},
+    {term:'전표', dept:'회계', def:'회계 처리의 최소 단위 기록으로, 계정과목과 금액이 함께 기재됩니다.'},
+    {term:'계정과목', dept:'회계', def:'전표에 기록되는 회계 분류 항목입니다.'},
+    {term:'검수 기준', dept:'품질', def:'입고된 물품의 품질과 수량을 확인하는 기준입니다.'},
+    {term:'발주서', dept:'구매', def:'구매팀이 거래처에 발행하는 주문 문서입니다.'},
+    {term:'납품서', dept:'물류', def:'거래처가 물품을 납품할 때 함께 보내는 문서입니다.'}
+  ];
+
+  var PROCESS = [
+    {title:'발주', owner:'구매팀', body:'<b>관련 문서</b> · 발주서<br><b>관련 정보</b> · 공급 계약 · 단가<br>필요 수량과 단가를 확정해 거래처에 발주서를 발행합니다.'},
+    {title:'입고', owner:'물류팀', body:'<b>관련 문서</b> · 납품서<br><b>관련 정보</b> · 재고<br>납품서와 실입고 수량을 대조하고 재고를 등록합니다.'},
+    {title:'검수', owner:'품질팀', body:'<b>관련 문서</b> · 검수 결과서<br><b>관련 정보</b> · 검수 기준<br>외관 · 규격 · 수량을 검수 기준에 따라 확인합니다.'},
+    {title:'세금계산서', owner:'회계팀', body:'<b>관련 문서</b> · 매입세금계산서<br>거래처의 세금계산서 발행 여부를 확인합니다.'},
+    {title:'회계처리', owner:'회계팀', body:'<b>관련 문서</b> · 전표 · 계정과목<br>확인된 세금계산서를 전표로 발행해 ERP에 반영합니다.'},
+    {title:'월말마감', owner:'회계팀', body:'<b>관련 문서</b> · 월말마감 체크리스트<br>모든 전표와 재고를 확정하며 한 달의 회계를 마감합니다.'}
+  ];
+
+  var CASES = [
+    {title:'거래처 세금계산서 미발행 지연 사례', dept:'회계팀', summary:'월말마감 직전, 거래처가 세금계산서를 발행하지 않아 회계 처리가 지연된 사례입니다.',
+      detail:'<b>원인</b> · 거래처 담당자 변경으로 발행 요청 메일이 누락됨.<br><b>해결</b> · 거래처에 유선으로 재요청 후 발행 즉시 ERP 반영. 이후 발주 시 발행 요청일을 함께 기록하도록 절차를 보완했습니다.'},
+    {title:'신입사원 3주 만에 실무 투입 사례', dept:'인사팀', summary:'온보딩 가이드의 STEP별 학습 경로를 따라 신입사원이 예상보다 빠르게 실무에 투입된 사례입니다.',
+      detail:'<b>배경</b> · 기존에는 담당자가 구두로 설명하며 2개월가량 소요됨.<br><b>해결</b> · 회사 → 부서 → 업무 → 용어 → 프로세스 → 사례 순으로 학습한 결과 3주 만에 단독 업무 처리가 가능해졌습니다.'},
+    {title:'발주 수량 오류로 인한 재입고 사례', dept:'구매팀 · 물류팀', summary:'발주서의 수량 오기입으로 실제 입고량이 부족해 재발주가 발생한 사례입니다.',
+      detail:'<b>원인</b> · 발주서 작성 시 수량 단위를 착각(박스 단위 → 개별 단위).<br><b>해결</b> · 검수 단계에서 조기 발견해 추가 발주로 대응. 이후 발주서 양식에 단위를 명시하도록 개선했습니다.'}
+  ];
+
+  var TEAM = [
+    {name:'김현', role:'Manager · 본인', tag:'나'},
+    {name:'이소정', role:'주임'},
+    {name:'박준영', role:'사원'},
+    {name:'최다혜', role:'사원'}
+  ];
+
+  var AI_EXAMPLES = [
+    '지식, 문서, 용어를 검색해보세요',
+    '거래처에서 세금계산서가 안 왔는데 어떻게 하나요?',
+    '경영지원팀 신입사원인데 뭐부터 알아야 하나요?',
+    '발주부터 입고까지 절차가 궁금해요'
+  ];
+
+  var dashDeptFilter = 'all';
+  var knowledgeDeptFilter = 'all';
+  var knowledgeQuery = '';
+
+  /* ---------------- helpers ---------------- */
+  function escapeHTML(s){
+    var d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
+  function favoritesCount(){ return state.docs.filter(function(d){return d.favorite;}).length; }
+  function showToast(msg){
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(showToast._tm);
+    showToast._tm = setTimeout(function(){ t.classList.remove('show'); }, 2200);
+  }
+  function closeAllPops(){
+    document.querySelectorAll('.pop.open').forEach(function(p){ p.classList.remove('open'); });
+  }
+  function openModal(html){
+    document.getElementById('modalBox').innerHTML = html;
+    document.getElementById('modalBackdrop').classList.add('show');
+  }
+  function closeModal(){
+    document.getElementById('modalBackdrop').classList.remove('show');
+  }
+
+  /* ---------------- doc rendering ---------------- */
+  function docItemHTML(doc, compact){
+    var star = '<button class="doc-star'+(doc.favorite?' active':'')+'" type="button" data-action="toggle-star" data-id="'+doc.id+'" aria-label="즐겨찾기">'+STAR_ICON+'</button>';
+    var btn = '<button class="doc-item-btn" type="button" data-action="open-doc" data-id="'+doc.id+'">' +
+        '<span class="doc-icon">'+DOC_ICON+'</span>' +
+        '<span class="doc-main">' +
+          '<span class="doc-title">'+escapeHTML(doc.title)+'</span>' +
+          '<span class="doc-meta">'+escapeHTML(doc.dept)+'팀 · '+escapeHTML(doc.author)+'</span>' +
+        '</span>' +
+      '</button>';
+    if(compact){
+      return '' +
+        '<li class="doc-item compact" data-doc-id="'+doc.id+'">' +
+          btn +
+          '<div class="doc-footer"><span class="doc-time">'+escapeHTML(doc.time)+'</span>'+star+'</div>' +
+        '</li>';
+    }
+    return '' +
+      '<li class="doc-item" data-doc-id="'+doc.id+'">' +
+        btn +
+        '<span class="doc-time">'+escapeHTML(doc.time)+'</span>' +
+        star +
+      '</li>';
+  }
+  function emptyStateHTML(msg){
+    return '<div class="empty-state">'+STAR_ICON.replace('16','30').replace('16','30')+'<div>'+msg+'</div></div>';
+  }
+
+  function renderDashboardDocs(){
+    var list = state.docs.filter(function(d){ return dashDeptFilter==='all' || d.dept===dashDeptFilter; }).slice(0,5);
+    var el = document.getElementById('dashboardDocList');
+    el.innerHTML = list.length ? list.map(docItemHTML).join('') : emptyStateHTML('해당 부서의 문서가 아직 없어요.');
+  }
+  function renderKnowledgeDocs(){
+    var q = knowledgeQuery.trim().toLowerCase();
+    var list = state.docs.filter(function(d){
+      var passDept = knowledgeDeptFilter==='all' || d.dept===knowledgeDeptFilter;
+      var passQ = !q || d.title.toLowerCase().indexOf(q) !== -1;
+      return passDept && passQ;
+    });
+    var el = document.getElementById('knowledgeDocList');
+    el.innerHTML = list.length ? list.map(docItemHTML).join('') : emptyStateHTML('조건에 맞는 문서가 없어요.');
+  }
+  function renderFavorites(){
+    var list = state.docs.filter(function(d){ return d.favorite; });
+    var el = document.getElementById('favoritesList');
+    el.innerHTML = list.length ? list.map(docItemHTML).join('') : emptyStateHTML('즐겨찾기한 문서가 없어요. 문서 카드의 별표를 눌러보세요.');
+  }
+  function renderStats(){
+    document.getElementById('statCreated').textContent = state.createdCount;
+    document.getElementById('statFav').textContent = favoritesCount();
+    document.getElementById('weeklyCount').textContent = state.weeklyBase;
+  }
+  function renderDeptGrid(){
+    var el = document.getElementById('deptGridLg');
+    el.innerHTML = DEPTS.map(function(d){
+      var docs = state.docs.filter(function(x){ return x.dept===d.key; });
+      return '' +
+        '<div class="dept-card-lg" data-dept="'+d.key+'">' +
+          '<button class="dept-card-head" type="button" data-action="toggle-dept" data-dept="'+d.key+'">' +
+            '<span class="dept-icon-lg">'+d.icon+'</span>' +
+            '<h3>'+d.key+'</h3>' +
+            '<p>'+d.desc+'</p>' +
+            '<div class="dept-count">문서 '+docs.length+'건</div>' +
+          '</button>' +
+          '<div class="dept-detail"><ul class="doc-list">'+(docs.length ? docs.map(function(d){ return docItemHTML(d, true); }).join('') : emptyStateHTML('아직 등록된 문서가 없어요.'))+'</ul></div>' +
+        '</div>';
+    }).join('');
+  }
+  function renderGlossary(query){
+    var q = (query||'').trim().toLowerCase();
+    var list = GLOSSARY.filter(function(g){
+      return !q || g.term.toLowerCase().indexOf(q)!==-1 || g.def.toLowerCase().indexOf(q)!==-1;
+    });
+    var el = document.getElementById('glossaryList');
+    el.innerHTML = list.length ? list.map(function(g){
+      return '<div class="glossary-item"><span class="glossary-term">'+g.term+'</span><span class="glossary-dept">'+g.dept+'</span><div class="glossary-def">'+g.def+'</div></div>';
+    }).join('') : emptyStateHTML('일치하는 용어가 없어요.');
+  }
+  function renderProcess(){
+    var el = document.getElementById('processList');
+    el.innerHTML = PROCESS.map(function(p, i){
+      return '' +
+        '<div class="acc-item" data-acc="proc-'+i+'">' +
+          '<button class="acc-head" type="button" data-action="toggle-acc" data-acc="proc-'+i+'">' +
+            '<span class="acc-badge">'+(i+1)+'</span>' +
+            '<span class="acc-head-main"><span class="acc-title">'+p.title+'</span><span class="acc-sub">'+p.owner+'</span></span>' +
+            '<span class="acc-chevron">'+CHEVRON+'</span>' +
+          '</button>' +
+          '<div class="acc-body">'+p.body+'</div>' +
+        '</div>';
+    }).join('');
+  }
+  function renderCases(){
+    var el = document.getElementById('casesList');
+    el.innerHTML = CASES.map(function(c, i){
+      return '' +
+        '<div class="acc-item" data-acc="case-'+i+'">' +
+          '<button class="acc-head" type="button" data-action="toggle-acc" data-acc="case-'+i+'">' +
+            '<span class="acc-badge">'+DOC_ICON.replace('16','14').replace('16','14')+'</span>' +
+            '<span class="acc-head-main"><span class="acc-title">'+c.title+'</span><span class="acc-sub">'+c.dept+' · '+c.summary+'</span></span>' +
+            '<span class="acc-chevron">'+CHEVRON+'</span>' +
+          '</button>' +
+          '<div class="acc-body">'+c.detail+'</div>' +
+        '</div>';
+    }).join('');
+  }
+  function renderTeam(){
+    document.getElementById('teamPinnedList').innerHTML = state.docs.filter(function(d){ return d.author==='김현'; }).map(docItemHTML).join('') || emptyStateHTML('고정된 문서가 없어요.');
+    document.getElementById('teamMemberList').innerHTML = TEAM.map(function(m){
+      var initials = m.name.slice(-2);
+      return '<div class="team-member"><span class="avatar">'+initials+'</span><span class="tm-info"><b>'+m.name+'</b><span>'+m.role+'</span></span>'+(m.tag?'<span class="tm-tag">'+m.tag+'</span>':'')+'</div>';
+    }).join('');
+  }
+
+  function renderAll(){
+    renderDashboardDocs();
+    renderKnowledgeDocs();
+    renderFavorites();
+    renderStats();
+    renderDeptGrid();
+    renderGlossary(document.getElementById('glossaryQuery').value);
+    renderProcess();
+    renderCases();
+    renderTeam();
+  }
+
+  /* ---------------- view switching ---------------- */
+  function showView(name){
+    document.querySelectorAll('.view').forEach(function(v){ v.classList.toggle('active', v.id === 'view-'+name); });
+    document.querySelectorAll('.nav-item[data-view]').forEach(function(n){ n.classList.toggle('active', n.dataset.view===name); });
+    window.scrollTo({top:0, behavior:'auto'});
+  }
+
+  /* ---------------- doc detail modal ---------------- */
+  function openDocDetail(id){
+    var doc = state.docs.filter(function(d){ return d.id===id; })[0];
+    if(!doc) return;
+    openModal(
+      '<button class="modal-close" type="button" data-action="close-modal" aria-label="닫기"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>' +
+      '<h2>'+escapeHTML(doc.title)+'</h2>' +
+      '<div class="modal-meta">'+escapeHTML(doc.dept)+'팀 · '+escapeHTML(doc.author)+' · '+escapeHTML(doc.time)+'</div>' +
+      '<div class="modal-body">'+doc.detail+'</div>'
+    );
+  }
+
+  /* ---------------- new document modal ---------------- */
+  function openNewDocModal(){
+    openModal(
+      '<button class="modal-close" type="button" data-action="close-modal" aria-label="닫기"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>' +
+      '<h2>새 문서 만들기</h2>' +
+      '<div class="modal-meta">등록한 지식은 대시보드와 업무 지식 목록에 바로 반영돼요.</div>' +
+      '<div class="field"><label for="newDocTitle">제목</label><input type="text" id="newDocTitle" placeholder="예: 출장비 정산 절차"></div>' +
+      '<div class="field"><label for="newDocDept">부서</label><select id="newDocDept"><option value="영업">영업</option><option value="인사">인사</option><option value="회계">회계</option><option value="구매">구매</option><option value="물류">물류</option><option value="품질">품질</option></select></div>' +
+      '<div class="field"><label for="newDocBody">내용</label><textarea id="newDocBody" placeholder="업무 절차나 참고할 내용을 적어주세요"></textarea></div>' +
+      '<div class="modal-actions"><button class="btn-ghost" type="button" data-action="close-modal">취소</button><button class="btn-primary" type="button" data-action="submit-new-doc">등록하기</button></div>'
+    );
+    setTimeout(function(){ var t=document.getElementById('newDocTitle'); if(t) t.focus(); }, 30);
+  }
+  function submitNewDoc(){
+    var titleEl = document.getElementById('newDocTitle');
+    var title = titleEl.value.trim();
+    if(!title){ showToast('제목을 입력해주세요'); titleEl.focus(); return; }
+    var dept = document.getElementById('newDocDept').value;
+    var body = document.getElementById('newDocBody').value.trim();
+    var doc = {
+      id: Date.now(), title: title, dept: dept, author:'김현', time:'방금 전', favorite:false,
+      detail: body ? '<p>'+escapeHTML(body).replace(/\n/g,'<br>')+'</p>' : '<p>등록된 상세 내용이 없습니다.</p>'
+    };
+    state.docs.unshift(doc);
+    state.createdCount++;
+    state.weeklyBase++;
+    closeModal();
+    renderDashboardDocs(); renderKnowledgeDocs(); renderStats(); renderDeptGrid(); renderTeam();
+    showToast('문서가 등록됐어요');
+  }
+
+  /* ---------------- AI search demo ---------------- */
+  function aiAnswerHTML(query){
+    var q = query.toLowerCase();
+    if(/세금계산서|매입/.test(q)){
+      return '<div class="ai-a-lead"><span class="ai-badge">AI</span>관련 업무와 담당 부서, 처리 절차를 찾았습니다.</div>' +
+        '<div class="ai-a-grid"><div><span class="ai-a-label">관련 업무</span>매입세금계산서 관리</div><div><span class="ai-a-label">담당 부서</span>회계팀</div><div><span class="ai-a-label">관련 용어</span>매입세금계산서 · ERP · 월말마감</div></div>' +
+        '<ol class="ai-steps"><li>거래처 확인</li><li>발행 요청</li><li>발행 여부 확인</li><li>ERP 반영</li></ol>';
+    }
+    if(/신입|온보딩|경영지원|알아야/.test(q)){
+      return '<div class="ai-a-lead"><span class="ai-badge">AI</span>역할에 맞춘 학습 경로를 6단계로 정리했습니다.</div>' +
+        '<ol class="ai-steps"><li>회사 · 사업 구조와 조직 흐름 이해</li><li>부서 · 소속 부서의 역할과 업무</li><li>업무 · 핵심 업무 목록</li><li>용어 · 사내 용어와 약어</li><li>프로세스 · 처리 절차와 결재 흐름</li><li>실제 사례 · 과거 처리 사례</li></ol>';
+    }
+    if(/발주|입고|검수/.test(q)){
+      return '<div class="ai-a-lead"><span class="ai-badge">AI</span>앞뒤 업무의 흐름까지 함께 찾았습니다.</div>' +
+        '<div class="ai-chain"><span class="chain-node">발주 · 구매팀</span><span class="chain-arrow">→</span><span class="chain-node">입고 · 물류팀</span><span class="chain-arrow">→</span><span class="chain-node">검수 · 품질팀</span><span class="chain-arrow">→</span><span class="chain-node">세금계산서 · 회계팀</span><span class="chain-arrow">→</span><span class="chain-node">회계처리 · 회계팀</span><span class="chain-arrow">→</span><span class="chain-node">월말마감 · 회계팀</span></div>';
+    }
+    return '<div class="ai-a-lead"><span class="ai-badge">AI</span>이 질문은 아직 학습되지 않았어요.</div>' +
+      '<p style="font-size:.82rem;color:var(--ink-soft);margin:0 0 12px;">데모에서는 아래 예시 질문으로 체험해보세요.</p>' +
+      '<div class="chip-row" style="margin:0;">' +
+        '<button class="chip" type="button" data-action="chip-search" data-q="거래처에서 세금계산서가 안 왔는데 어떻게 하나요?">세금계산서 문의</button>' +
+        '<button class="chip" type="button" data-action="chip-search" data-q="경영지원팀 신입사원인데 뭐부터 알아야 하나요?">신입사원 학습 경로</button>' +
+        '<button class="chip" type="button" data-action="chip-search" data-q="발주부터 입고까지 절차가 궁금해요">발주-입고-검수 절차</button>' +
+      '</div>';
+  }
+  function runSearch(query){
+    query = (query||'').trim();
+    if(!query) return;
+    if(document.getElementById('view-dashboard').classList.contains('active') === false){
+      showView('dashboard');
+    }
+    var panel = document.getElementById('aiPanel');
+    panel.innerHTML =
+      '<div class="ai-panel-head"><div style="flex:1;min-width:0;"><div class="ai-q">Q. "'+escapeHTML(query)+'"</div></div>' +
+      '<button class="ai-panel-close" type="button" data-action="close-ai-panel" aria-label="닫기"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>' +
+      aiAnswerHTML(query);
+    panel.classList.add('show');
+    panel.scrollIntoView({block:'nearest'});
+  }
+
+  /* ---------------- placeholder typewriter ---------------- */
+  function startTypewriter(){
+    var input = document.getElementById('searchInput');
+    if(!input) return;
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var phase=0, charIdx=0, deleting=false;
+    function tick(){
+      if(document.activeElement === input){ setTimeout(tick, 600); return; }
+      var full = AI_EXAMPLES[phase];
+      if(!deleting){
+        charIdx++;
+        input.setAttribute('placeholder', full.slice(0, charIdx));
+        if(charIdx >= full.length){ deleting = true; setTimeout(tick, 1800); return; }
+        setTimeout(tick, 55);
+      } else {
+        charIdx--;
+        input.setAttribute('placeholder', full.slice(0, charIdx));
+        if(charIdx <= 0){ deleting=false; phase=(phase+1)%AI_EXAMPLES.length; setTimeout(tick, 300); return; }
+        setTimeout(tick, 25);
+      }
+    }
+    setTimeout(tick, 1400);
+  }
+
+  /* ---------------- events ---------------- */
+  document.addEventListener('click', function(e){
+    var navBtn = e.target.closest('.nav-item[data-view]');
+    if(navBtn){ showView(navBtn.dataset.view); closeAllPops(); return; }
+
+    var actionEl = e.target.closest('[data-action]');
+    var pop = e.target.closest('.pop-wrap');
+    if(!pop) closeAllPops();
+
+    if(!actionEl) return;
+    var action = actionEl.dataset.action;
+
+    if(action==='open-doc'){ openDocDetail(Number(actionEl.dataset.id)); return; }
+    if(action==='toggle-star'){
+      e.stopPropagation();
+      var doc = state.docs.filter(function(d){ return d.id===Number(actionEl.dataset.id); })[0];
+      if(doc){
+        doc.favorite = !doc.favorite;
+        renderDashboardDocs(); renderKnowledgeDocs(); renderFavorites(); renderStats(); renderDeptGrid();
+        showToast(doc.favorite ? '즐겨찾기에 추가했어요' : '즐겨찾기에서 제거했어요');
+      }
+      return;
+    }
+    if(action==='open-new-doc'){ openNewDocModal(); return; }
+    if(action==='submit-new-doc'){ submitNewDoc(); return; }
+    if(action==='close-modal'){ closeModal(); return; }
+    if(action==='goto-dept'){
+      showView('departments');
+      setTimeout(function(){
+        var card = document.querySelector('.dept-card-lg[data-dept="'+actionEl.dataset.dept+'"]');
+        if(card){ card.classList.add('open'); card.scrollIntoView({block:'start', behavior:'smooth'}); }
+      }, 30);
+      return;
+    }
+    if(action==='toggle-dept'){
+      var deptCard = actionEl.closest('.dept-card-lg');
+      if(deptCard) deptCard.classList.toggle('open');
+      return;
+    }
+    if(action==='toggle-acc'){
+      var item = actionEl.closest('.acc-item');
+      var willOpen = !item.classList.contains('open');
+      item.parentElement.querySelectorAll('.acc-item.open').forEach(function(o){ if(o!==item) o.classList.remove('open'); });
+      item.classList.toggle('open', willOpen);
+      return;
+    }
+    if(action==='chip-search'){
+      document.getElementById('searchInput').value = actionEl.dataset.q;
+      runSearch(actionEl.dataset.q);
+      return;
+    }
+    if(action==='close-ai-panel'){ document.getElementById('aiPanel').classList.remove('show'); return; }
+    if(action==='mark-read'){
+      document.getElementById('bellDot').style.display = 'none';
+      closeAllPops();
+      showToast('모든 알림을 읽었어요');
+      return;
+    }
+    if(action==='toast-demo'){ closeAllPops(); showToast('데모 버전에서는 준비 중인 기능이에요'); return; }
+  });
+
+  document.getElementById('bellBtn').addEventListener('click', function(e){
+    e.stopPropagation();
+    var wasOpen = document.getElementById('bellPop').classList.contains('open');
+    closeAllPops();
+    document.getElementById('bellPop').classList.toggle('open', !wasOpen);
+  });
+  document.getElementById('helpBtn').addEventListener('click', function(e){
+    e.stopPropagation();
+    var wasOpen = document.getElementById('helpPop').classList.contains('open');
+    closeAllPops();
+    document.getElementById('helpPop').classList.toggle('open', !wasOpen);
+  });
+  document.getElementById('userBtn').addEventListener('click', function(e){
+    e.stopPropagation();
+    var wasOpen = document.getElementById('userPop').classList.contains('open');
+    closeAllPops();
+    document.getElementById('userPop').classList.toggle('open', !wasOpen);
+  });
+
+  document.getElementById('modalBackdrop').addEventListener('click', function(e){
+    if(e.target === this) closeModal();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){ closeModal(); closeAllPops(); }
+  });
+
+  document.getElementById('searchGo').addEventListener('click', function(){
+    runSearch(document.getElementById('searchInput').value);
+  });
+  document.getElementById('searchInput').addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){ runSearch(this.value); }
+  });
+
+  document.getElementById('dashDeptFilter').addEventListener('change', function(){
+    dashDeptFilter = this.value; renderDashboardDocs();
+  });
+  document.getElementById('knowledgeDeptFilter').addEventListener('change', function(){
+    knowledgeDeptFilter = this.value; renderKnowledgeDocs();
+  });
+  document.getElementById('knowledgeQuery').addEventListener('input', function(){
+    knowledgeQuery = this.value; renderKnowledgeDocs();
+  });
+  document.getElementById('glossaryQuery').addEventListener('input', function(){
+    renderGlossary(this.value);
+  });
+
+  /* ---------------- init ---------------- */
+  renderAll();
+  startTypewriter();
+})();
+</script>
